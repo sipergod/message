@@ -1,16 +1,20 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:message/Static/Enum/AuthenticationSupportState.dart';
 
 class LocalAuthenticationConfig {
-  LocalAuthenticationConfig({required this.localAuthentication}) : super();
+  LocalAuthenticationConfig({required this.localAuthentication, this.state})
+      : super();
 
   final LocalAuthentication localAuthentication;
 
+  State? state;
   AuthenticationSupportState supportState = AuthenticationSupportState.unknown;
   bool canCheckBiometrics = false;
   List<BiometricType> availableBiometrics = [];
   String authorized = 'Not Authorized';
+  bool isAuthorized = false;
   bool isAuthenticating = false;
 
   void initialize() {
@@ -56,34 +60,40 @@ class LocalAuthenticationConfig {
   Future<void> authenticate() async {
     bool authenticated = false;
     try {
-      isAuthenticating = true;
-      authorized = 'Authenticating';
-
+      state!.setState(() {
+        isAuthenticating = true;
+        authorized = 'Authenticating';
+      });
       authenticated = await localAuthentication.authenticate(
         localizedReason: 'Let OS determine authentication method',
         useErrorDialogs: true,
         stickyAuth: true,
       );
-
-      isAuthenticating = false;
+      state!.setState(() {
+        isAuthenticating = false;
+      });
     } on PlatformException catch (e) {
       print(e);
-
-      isAuthenticating = false;
-      authorized = "Error - ${e.message}";
-
+      state!.setState(() {
+        isAuthenticating = false;
+        authorized = "Error - ${e.message}";
+        isAuthorized = false;
+      });
       return;
     }
-
-    authorized = authenticated ? 'Authorized' : 'Not Authorized';
+    state!.setState(() {
+      authorized = authenticated ? 'Authorized' : 'Not Authorized';
+      isAuthorized = authenticated;
+    });
   }
 
   Future<void> authenticateWithBiometrics() async {
     bool authenticated = false;
     try {
-      isAuthenticating = true;
-      authorized = 'Authenticating';
-
+      state!.setState(() {
+        isAuthenticating = true;
+        authorized = 'Authenticating';
+      });
       authenticated = await localAuthentication.authenticate(
         localizedReason:
             'Scan your fingerprint (or face or whatever) to authenticate',
@@ -91,25 +101,38 @@ class LocalAuthenticationConfig {
         stickyAuth: true,
         biometricOnly: true,
       );
-
-      isAuthenticating = false;
-      authorized = 'Authenticating';
+      state!.setState(() {
+        isAuthenticating = false;
+        authorized = 'Authenticating';
+      });
     } on PlatformException catch (e) {
       print(e);
-
-      isAuthenticating = false;
-      authorized = "Error - ${e.message}";
+      state!.setState(() {
+        isAuthenticating = false;
+        authorized = "Error - ${e.message}";
+        isAuthorized = false;
+      });
 
       return;
     }
 
     final String message = authenticated ? 'Authorized' : 'Not Authorized';
+    isAuthorized = authenticated;
 
     authorized = message;
   }
 
   void cancelAuthentication() async {
     await localAuthentication.stopAuthentication();
-    isAuthenticating = false;
+    state!.setState(() {
+      isAuthenticating = false;
+    });
+  }
+
+  void returnUnauthenticated() async {
+    state!.setState(() {
+      authorized = 'Not Authorized';
+      isAuthorized = false;
+    });
   }
 }

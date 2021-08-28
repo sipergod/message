@@ -15,6 +15,8 @@ class LocalAuthenticationPageState extends State<LocalAuthenticationPage> {
   @override
   void initState() {
     super.initState();
+
+    LocalAuthenticationService.localAuthenticationConfig.state = this;
   }
 
   @override
@@ -27,7 +29,7 @@ class LocalAuthenticationPageState extends State<LocalAuthenticationPage> {
 
   Widget buildBody() {
     return ListView(
-      padding: const EdgeInsets.only(top: 30),
+      padding: const EdgeInsets.only(top: 10),
       children: [
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -42,7 +44,7 @@ class LocalAuthenticationPageState extends State<LocalAuthenticationPage> {
               Text("This device is supported")
             else
               Text("This device is not supported"),
-            Divider(height: 100),
+            Divider(height: 20),
             Text(
                 'Can check biometrics: ${LocalAuthenticationService.localAuthenticationConfig.canCheckBiometrics}\n'),
             ElevatedButton(
@@ -50,7 +52,7 @@ class LocalAuthenticationPageState extends State<LocalAuthenticationPage> {
               onPressed: LocalAuthenticationService
                   .localAuthenticationConfig.checkBiometrics,
             ),
-            Divider(height: 100),
+            Divider(height: 20),
             Text(
                 'Available biometrics: ${LocalAuthenticationService.localAuthenticationConfig.availableBiometrics}\n'),
             ElevatedButton(
@@ -58,9 +60,9 @@ class LocalAuthenticationPageState extends State<LocalAuthenticationPage> {
               onPressed: LocalAuthenticationService
                   .localAuthenticationConfig.getAvailableBiometrics,
             ),
-            Divider(height: 100),
+            Divider(height: 20),
             Text(
-                'Current State: $LocalAuthenticationService.localAuthenticationConfig.authorized\n'),
+                'Current State: ${LocalAuthenticationService.localAuthenticationConfig.authorized}\n'),
             (LocalAuthenticationService
                     .localAuthenticationConfig.isAuthenticating)
                 ? ElevatedButton(
@@ -104,6 +106,14 @@ class LocalAuthenticationPageState extends State<LocalAuthenticationPage> {
                       ),
                     ],
                   ),
+            Divider(height: 20),
+            Text(
+                'Current State: ${LocalAuthenticationService.localAuthenticationConfig.authorized}\n'),
+            ElevatedButton(
+              child: const Text('Do Unauthenticated'),
+              onPressed: LocalAuthenticationService
+                  .localAuthenticationConfig.returnUnauthenticated,
+            ),
           ],
         ),
       ],

@@ -52,35 +52,35 @@ class BottomNavBarTemplateState extends State<BottomNavBarTemplate> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           IconButton(
-            color: checkIndex(0),
+            color: setActive(0),
             tooltip: 'Home',
             onPressed: () {
-              Navigator.pushReplacementNamed(context, '/');
+              setPressFunc(0, '/');
             },
             icon: Icon(Icons.home),
           ),
           Spacer(),
           IconButton(
-            color: checkIndex(1),
+            color: setActive(1),
             tooltip: 'Notification',
             onPressed: () {
-              Navigator.pushReplacementNamed(context, '/notification');
+              setPressFunc(1, '/notification');
             },
             icon: Icon(Icons.notification_important_rounded),
           ),
           IconButton(
-            color: checkIndex(2),
+            color: setActive(2),
             tooltip: 'Authentication',
             onPressed: () {
-              Navigator.pushReplacementNamed(context, '/authentication');
+              setPressFunc(2, '/authentication');
             },
             icon: Icon(Icons.fingerprint),
           ),
           IconButton(
-            color: checkIndex(3),
+            color: setActive(3),
             tooltip: 'Settings',
             onPressed: () {
-              Navigator.pushReplacementNamed(context, '/setting');
+              setPressFunc(3, '/setting');
             },
             icon: Icon(Icons.settings),
           ),
@@ -89,10 +89,21 @@ class BottomNavBarTemplateState extends State<BottomNavBarTemplate> {
     );
   }
 
-  Color checkIndex(int i) {
+  bool checkIndex(int i) {
     if (i == widget.bottomNavigateBarIndex)
+      return true;
+    else
+      return false;
+  }
+
+  Color setActive(int i) {
+    if (checkIndex(i))
       return Colors.orange;
     else
       return Theme.of(context).disabledColor;
+  }
+
+  void setPressFunc(int i, String routeName) {
+    if (!checkIndex(i)) Navigator.pushReplacementNamed(context, routeName);
   }
 }

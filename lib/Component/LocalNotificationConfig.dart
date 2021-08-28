@@ -49,15 +49,11 @@ class LocalNotificationConfig {
 
     IOSInitializationSettings initializationSettingsIOS =
         IOSInitializationSettings(
-            requestAlertPermission: false,
-            requestBadgePermission: false,
-            requestSoundPermission: false,
-            onDidReceiveLocalNotification: (
-              int id,
-              String? title,
-              String? body,
-              String? payload,
-            ) async {});
+      requestAlertPermission: false,
+      requestBadgePermission: false,
+      requestSoundPermission: false,
+      onDidReceiveLocalNotification: onDidReceiveLocalNotification,
+    );
 
     MacOSInitializationSettings initializationSettingsMacOS =
         MacOSInitializationSettings(
@@ -79,6 +75,66 @@ class LocalNotificationConfig {
           print('notification payload: $payload');
         }
       },
+    );
+  }
+
+  Future onDidReceiveLocalNotification(
+      int id, String? title, String? body, String? payload) async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+            'your channel id', 'your channel name', 'your channel description',
+            importance: Importance.max,
+            priority: Priority.high,
+            ticker: 'ticker');
+    const NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin
+        .show(id, title, body, platformChannelSpecifics, payload: payload);
+  }
+
+  Future<void> showCustomNotification(int id, String? title, String? body,
+      String imageLink, String? payload) async {
+    late BigPictureStyleInformation bigPictureStyleInformation;
+    if (imageLink.isNotEmpty) {
+      String largeIconPath = await _downloadAndSaveFile(
+        imageLink,
+        (imageLink.split('/').last).split('.').first + '_Icon',
+      );
+      String bigPicturePath = await _downloadAndSaveFile(
+        imageLink,
+        (imageLink.split('/').last).split('.').first + '_Pic',
+      );
+
+      bigPictureStyleInformation = BigPictureStyleInformation(
+        FilePathAndroidBitmap(bigPicturePath),
+        largeIcon: FilePathAndroidBitmap(largeIconPath),
+        contentTitle: 'overridden <b>big</b> content title',
+        htmlFormatContentTitle: true,
+        summaryText: 'summary <i>text</i>',
+        htmlFormatSummaryText: true,
+      );
+    }
+
+    final AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+      'big text channel id',
+      'big text channel name',
+      'big text channel description',
+      styleInformation:
+          imageLink.isNotEmpty ? bigPictureStyleInformation : null,
+      importance: Importance.max,
+      priority: Priority.high,
+      ticker: 'ticker',
+    );
+
+    final NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+      id,
+      title,
+      body,
+      platformChannelSpecifics,
+      payload: payload,
     );
   }
 

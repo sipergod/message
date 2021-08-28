@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:message/Static/Constants.dart';
+import 'package:message/Static/LocalNotificationService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FirebaseMessageConfig {
@@ -24,9 +25,13 @@ class FirebaseMessageConfig {
           _firebaseMessagingBackgroundHandler);
 
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+        int uniqueId = 0;
+        String image = '';
+
         RemoteNotification? notification = message.notification;
         AndroidNotification? android = message.notification?.android;
         AppleNotification? apple = message.notification?.apple;
+
         if (notification != null && android != null && !kIsWeb) {
           print('notification.title: ${notification.title}');
           print('notification.body: ${notification.body}');
@@ -35,6 +40,9 @@ class FirebaseMessageConfig {
           print('android.link: ${android.link}');
           print('message.data: ${message.data}');
           print('message.sentTime: ${message.sentTime}');
+
+          uniqueId = message.sentTime.hashCode;
+          image = android.imageUrl != null ? android.imageUrl! : '';
         }
         if (notification != null && apple != null && !kIsWeb) {
           print('notification.title: ${notification.title}');
@@ -42,7 +50,18 @@ class FirebaseMessageConfig {
           print('apple.imageUrl: ${apple.imageUrl}');
           print('apple.subtitle: ${apple.subtitle}');
           print('apple.badge: ${apple.badge}');
+
+          uniqueId = message.hashCode;
+          image = apple.imageUrl != null ? apple.imageUrl! : '';
         }
+
+        LocalNotificationService.notificationService.showCustomNotification(
+          uniqueId,
+          notification!.title,
+          notification.body,
+          image,
+          json.encode(message.data),
+        );
       });
 
       FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
