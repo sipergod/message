@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:message/Static/ListBuildItem/ListBottomNavigateItem.dart';
 import 'package:message/Static/LocalNotificationService.dart';
 import 'package:message/Template/BottomNavBarTemplate.dart';
 
@@ -366,7 +367,8 @@ class LocalNotificationOptionPageState
           ),
         ),
       ),
-      bottomNavigateBarIndex: 1,
+      listBottomNavigateBar: ListBottomNavigateItem.list,
+      bottomNavigateBarIndex: 3,
     );
   }
 }

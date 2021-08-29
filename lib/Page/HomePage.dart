@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:message/Component/FirebaseMessageConfig.dart';
 import 'package:message/Event/PublicFunctionEvent.dart';
+import 'package:message/Static/ListBuildItem/ListBottomNavigateItem.dart';
 import 'package:message/Template/BottomNavBarTemplate.dart';
-import 'package:message/Template/RootTemplate.dart';
 import 'package:message/UI/ListViewBuilder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -95,6 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
       ),
+      listBottomNavigateBar: ListBottomNavigateItem.list,
       bottomNavigateBarIndex: 0,
       floatingActionButton: Visibility(
         visible: fBtnVisible,

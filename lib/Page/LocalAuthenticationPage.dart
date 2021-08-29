@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:message/Static/Enum/AuthenticationSupportState.dart';
+import 'package:message/Static/ListBuildItem/ListBottomNavigateItem.dart';
 import 'package:message/Static/LocalAuthenticationService.dart';
 import 'package:message/Template/BottomNavBarTemplate.dart';
 
@@ -23,7 +24,8 @@ class LocalAuthenticationPageState extends State<LocalAuthenticationPage> {
   Widget build(BuildContext context) {
     return BottomNavBarTemplate(
       bodyWidget: buildBody(),
-      bottomNavigateBarIndex: 2,
+      listBottomNavigateBar: ListBottomNavigateItem.list,
+      bottomNavigateBarIndex: 4,
     );
   }
 

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:message/Page/HomePage.dart';
-import 'package:message/Page/LocalNotificationOptionPage.dart';
 import 'package:message/Template/RootTemplate.dart';
 
 class BottomNavBarTemplate extends StatefulWidget {
@@ -10,8 +8,10 @@ class BottomNavBarTemplate extends StatefulWidget {
   final Widget? drawerMenu;
   final Widget? bottomTabBar;
   final Widget? bodyWidget;
+  final List<Map<String, dynamic>> listBottomNavigateBar;
   final int? bottomNavigateBarIndex;
   final Widget? floatingActionButton;
+  final FloatingActionButtonLocation? floatingActionButtonLocation;
 
   BottomNavBarTemplate({
     Key? key,
@@ -21,8 +21,10 @@ class BottomNavBarTemplate extends StatefulWidget {
     this.drawerMenu,
     this.bottomTabBar,
     this.bodyWidget,
+    required this.listBottomNavigateBar,
     this.bottomNavigateBarIndex,
     this.floatingActionButton,
+    this.floatingActionButtonLocation,
   }) : super(key: key);
 
   @override
@@ -40,53 +42,46 @@ class BottomNavBarTemplateState extends State<BottomNavBarTemplate> {
       bodyWidget: widget.bodyWidget,
       bottomNavigateBar: buildBottomNavigateBar(),
       floatingActionButton: widget.floatingActionButton,
+      floatingActionButtonLocation: widget.listBottomNavigateBar.isNotEmpty
+          ? FloatingActionButtonLocation.centerDocked
+          : null,
     );
   }
 
-  Widget buildBottomNavigateBar() {
-    return BottomAppBar(
-      shape: widget.floatingActionButton != null
-          ? CircularNotchedRectangle()
-          : null,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          IconButton(
-            color: setActive(0),
-            tooltip: 'Home',
-            onPressed: () {
-              setPressFunc(0, '/');
-            },
-            icon: Icon(Icons.home),
-          ),
-          Spacer(),
-          IconButton(
-            color: setActive(1),
-            tooltip: 'Notification',
-            onPressed: () {
-              setPressFunc(1, '/notification');
-            },
-            icon: Icon(Icons.notification_important_rounded),
-          ),
-          IconButton(
-            color: setActive(2),
-            tooltip: 'Authentication',
-            onPressed: () {
-              setPressFunc(2, '/authentication');
-            },
-            icon: Icon(Icons.fingerprint),
-          ),
-          IconButton(
-            color: setActive(3),
-            tooltip: 'Settings',
-            onPressed: () {
-              setPressFunc(3, '/setting');
-            },
-            icon: Icon(Icons.settings),
-          ),
-        ],
-      ),
-    );
+  Widget? buildBottomNavigateBar() {
+    if (widget.listBottomNavigateBar.isNotEmpty) {
+      return BottomAppBar(
+        shape: widget.floatingActionButton != null
+            ? CircularNotchedRectangle()
+            : null,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: new List<Widget>.generate(
+              widget.listBottomNavigateBar.length,
+              (index) => bottomNavigateItem(
+                    index,
+                    widget.listBottomNavigateBar,
+                  )).toList(),
+        ),
+      );
+    } else {
+      return null;
+    }
+  }
+
+  Widget bottomNavigateItem(int index, List<Map<String, dynamic>> listData) {
+    if (listData[index].isNotEmpty) {
+      return IconButton(
+        color: setActive(index),
+        tooltip: listData[index]['toolTip'],
+        onPressed: () {
+          setPressFunc(index, listData[index]['pageName']);
+        },
+        icon: listData[index]['icon'],
+      );
+    } else {
+      return Spacer();
+    }
   }
 
   bool checkIndex(int i) {

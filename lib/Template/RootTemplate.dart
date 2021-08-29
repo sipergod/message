@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:message/Component/LocalNotificationConfig.dart';
+import 'package:message/Event/PublicFunctionEvent.dart';
 import 'package:message/Static/LocalAuthenticationService.dart';
 import 'package:message/Static/LocalNotificationService.dart';
 
@@ -14,6 +13,7 @@ class RootTemplate extends StatefulWidget {
   final int? bottomNavigateBarIndex;
   final Widget? bottomNavigateBar;
   final Widget? floatingActionButton;
+  final FloatingActionButtonLocation? floatingActionButtonLocation;
 
   RootTemplate({
     Key? key,
@@ -26,6 +26,7 @@ class RootTemplate extends StatefulWidget {
     this.bottomNavigateBarIndex,
     this.bottomNavigateBar,
     this.floatingActionButton,
+    this.floatingActionButtonLocation,
   }) : super(key: key);
 
   @override
@@ -34,6 +35,7 @@ class RootTemplate extends StatefulWidget {
 
 class _RootTemplateState extends State<RootTemplate>
     with WidgetsBindingObserver {
+  DateTime? currentBackPressTime;
 
   @override
   void initState() {
@@ -60,30 +62,26 @@ class _RootTemplateState extends State<RootTemplate>
       key: widget.scaffoldKey,
       appBar: buildAppBar() as AppBar,
       drawer: widget.drawerMenu,
-      body: SafeArea(child: widget.bodyWidget as Widget),
+      body: WillPopScope(
+        onWillPop: () => PublicFunctionEvent.onWillPop(currentBackPressTime),
+        child: SafeArea(
+          child: widget.bodyWidget as Widget,
+        ),
+      ),
       bottomNavigationBar: widget.bottomNavigateBar,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonLocation: widget.floatingActionButtonLocation,
       floatingActionButton: widget.floatingActionButton,
     );
   }
 
   Widget buildAppBar() {
-    Widget returnWidget = Container();
-
-    returnWidget = AppBar(
+    return AppBar(
       automaticallyImplyLeading: true,
       centerTitle: true,
       title: buildTitle(),
       actions: widget.appBarAction != null ? buildAppbarAction() : null,
-      bottom: widget.bottomTabBar != null
-          ? PreferredSize(
-              child: buildTabBar(),
-              preferredSize: Size.fromHeight(100),
-            )
-          : null,
+      bottom: buildTabBar() as PreferredSizeWidget,
     );
-
-    return returnWidget;
   }
 
   Widget buildTitle() {
@@ -112,16 +110,14 @@ class _RootTemplateState extends State<RootTemplate>
     return returnWidget;
   }
 
-  Widget buildTabBar() {
-    Widget returnWidget;
-    if (widget.title != null && widget.bottomTabBar != null) {
-      returnWidget = widget.bottomTabBar as Widget;
+  Widget? buildTabBar() {
+    if (widget.bottomTabBar != null) {
+      return widget.bottomTabBar as Widget;
     } else {
-      returnWidget = PreferredSize(
+      return PreferredSize(
         child: Container(),
         preferredSize: Size.fromHeight(0.0),
       );
     }
-    return returnWidget;
   }
 }
