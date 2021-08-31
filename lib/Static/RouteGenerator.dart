@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:message/Page/HomePage.dart';
 import 'package:message/Page/LocalAuthenticationPage.dart';
 import 'package:message/Page/LocalNotificationOptionPage.dart';
-import 'package:message/Page/MuiltiTabPage.dart';
+import 'package:message/Page/MultiTabPage.dart';
+import 'package:message/Page/Static/SettingPage.dart';
 import 'package:message/Static/ListBuildItem/ListBottomNavigateItem.dart';
 import 'package:message/Template/BottomNavBarTemplate.dart';
 
@@ -12,7 +13,7 @@ class RouteGenerator {
       case '/':
         return MaterialPageRoute(
           settings: settings,
-          builder: (BuildContext context) => MyHomePage(),
+          builder: (BuildContext context) => HomePage(),
         );
       case '/multiTab':
         return MaterialPageRoute(
@@ -28,6 +29,11 @@ class RouteGenerator {
         return MaterialPageRoute(
           settings: settings,
           builder: (BuildContext context) => LocalAuthenticationPage(),
+        );
+      case '/setting':
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (BuildContext context) => SettingPage(),
         );
       default:
         return _errorRoute(settings);

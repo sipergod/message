@@ -1,26 +1,32 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
+import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:message/Component/FirebaseMessageConfig.dart';
 import 'package:message/Page/HomePage.dart';
-import 'package:message/Page/LocalNotificationOptionPage.dart';
 import 'package:message/Static/RouteGenerator.dart';
 import 'Component/AnalyticsRouteObserver.dart';
 import 'Event/InitEvent.dart';
-import 'Page/Static/SplashPage.dart';
+import 'Static/AppThemes.dart';
+import 'Static/ApplicationInitSettings.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  FirebaseMessageConfig.initialize();
+
+  await Init.instance.initialize();
+
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  static FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics();
-  static FirebaseAnalyticsObserver firebaseObserver =
-      FirebaseAnalyticsObserver(analytics: firebaseAnalytics);
+class MyApp extends StatefulWidget {
+  @override
+  MyAppState createState() => new MyAppState();
+}
+
+class MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,21 +42,22 @@ class MyApp extends StatelessWidget {
       ),
     );
 
-    return FutureBuilder(
-      future: Init.instance.initialize(),
-      builder: (context, AsyncSnapshot snapshot) {
+    return DynamicTheme(
+      themeCollection: themeCollection,
+      defaultThemeId: ApplicationInitSettings.instance.themeIsDark
+          ? AppThemes.Dark
+          : AppThemes.Light,
+      builder: (context, theme) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: '',
-          themeMode: ThemeMode.system,
-          theme: ThemeData.light(),
-          darkTheme: ThemeData.dark(),
-          home: snapshot.connectionState == ConnectionState.waiting
-              ? SplashPage()
-              : MyHomePage(),
+          theme: theme,
+          home: HomePage(),
           navigatorObservers: [
-            firebaseObserver,
-            AnalyticsRouteObserver(analytics: firebaseAnalytics)
+            ApplicationInitSettings.firebaseObserver,
+            AnalyticsRouteObserver(
+              analytics: ApplicationInitSettings.firebaseAnalytics,
+            ),
           ],
           initialRoute: '/',
           onGenerateRoute: RouteGenerator.generateRoute,

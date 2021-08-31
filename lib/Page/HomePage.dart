@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:message/Component/FirebaseMessageConfig.dart';
 import 'package:message/Event/PublicFunctionEvent.dart';
+import 'package:message/Static/ApplicationInitSettings.dart';
+import 'package:message/Static/Constants.dart';
 import 'package:message/Static/ListBuildItem/ListBottomNavigateItem.dart';
 import 'package:message/Template/BottomNavBarTemplate.dart';
 import 'package:message/UI/ListViewBuilder.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  HomePage({Key? key}) : super(key: key);
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HomePageState extends State<HomePage> {
   int _counter = 0;
   bool fBtnVisible = true;
-  String token = '';
   ScrollController scrollController = new ScrollController();
 
   void _incrementCounter() {
@@ -25,13 +25,13 @@ class _MyHomePageState extends State<MyHomePage> {
       _counter++;
     });
 
-    FirebaseMessageConfig.sendPushMessage([token], {}, {});
+    FirebaseMessageConfig.sendPushMessage([
+      ApplicationInitSettings.instance.sharedPreferences.getString('token')!
+    ], {}, {});
   }
 
   @override
   void initState() {
-    super.initState();
-
     PublicFunctionEvent().addScrollListener(
       scrollController,
       () {},
@@ -51,9 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
       },
     );
 
-    SharedPreferences.getInstance().then(
-      (sharedPreferences) => {token = sharedPreferences.getString('token')!},
-    );
+    super.initState();
   }
 
   @override
@@ -62,14 +60,12 @@ class _MyHomePageState extends State<MyHomePage> {
       bodyWidget: Center(
         child: Container(
           width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(border: Border.all(color: Colors.red)),
           child: Column(
             children: [
               SingleChildScrollView(
                 child: Container(
+                  padding: EdgeInsets.all(Constants.padding),
                   width: MediaQuery.of(context).size.width,
-                  decoration:
-                      BoxDecoration(border: Border.all(color: Colors.blue)),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -86,8 +82,6 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Expanded(
                 child: Container(
-                  decoration:
-                      BoxDecoration(border: Border.all(color: Colors.blue)),
                   child: buildListData(),
                 ),
               ),

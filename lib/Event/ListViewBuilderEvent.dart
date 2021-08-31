@@ -38,15 +38,25 @@ class ListViewBuilderEvent {
   }
 
   Future<void> loadList(int pageNum) async {
-    testLoadList(pageNum);
+    if(pageNum != 1) {
+      state.setState(() {
+        isLoading = true;
+      });
+    }
+    await testLoadList(pageNum).then((value) {
+      state.setState(() {
+        isLoading = false;
+      });
+    });
   }
 
-  void testLoadList(int pageNum) {
+  Future<void> testLoadList(int pageNum) async {
+    await Future.delayed(Duration(seconds: 1));
     if (pageNum == 1) {
       state.setState(() {
         listData = List<Map<String, dynamic>>.generate(
           50,
-              (i) => i % 6 == 0
+          (i) => i % 6 == 0
               ? {i.toString(): Text('Heading $i')}
               : {i.toString(): Text('Sender $i ' 'Message body $i')},
         );
@@ -55,16 +65,16 @@ class ListViewBuilderEvent {
     } else {
       List<Map<String, dynamic>>.generate(
         50,
-            (i) => (listData.length + i) % 6 == 0
+        (i) => (listData.length + i) % 6 == 0
             ? {
-          (listData.length + i).toString():
-          Text('Heading ${listData.length + i}')
-        }
+                (listData.length + i).toString():
+                    Text('Heading ${listData.length + i}')
+              }
             : {
-          (listData.length + i).toString():
-          Text('Sender ${listData.length + i} '
-              'Message body ${listData.length + i}')
-        },
+                (listData.length + i).toString():
+                    Text('Sender ${listData.length + i} '
+                        'Message body ${listData.length + i}')
+              },
       ).forEach((element) {
         state.setState(() {
           listData.add(element);

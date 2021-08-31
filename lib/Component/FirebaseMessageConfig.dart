@@ -3,9 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:message/Static/ApplicationInitSettings.dart';
 import 'package:message/Static/Constants.dart';
 import 'package:message/Static/LocalNotificationService.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class FirebaseMessageConfig {
   static FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
@@ -18,8 +18,6 @@ class FirebaseMessageConfig {
 
   static Future<void> initialize() async {
     if (!kIsWeb) {
-      SharedPreferences sharedPreferences =
-          await SharedPreferences.getInstance();
       await Firebase.initializeApp();
       FirebaseMessaging.onBackgroundMessage(
           _firebaseMessagingBackgroundHandler);
@@ -69,7 +67,7 @@ class FirebaseMessageConfig {
       });
 
       getToken().then(
-        (value) => sharedPreferences.setString('token', value!),
+        (value) => ApplicationInitSettings.instance.sharedPreferences.setString('token', value!),
       );
       subscribeTopic('fcm_all');
     } else {}
