@@ -368,7 +368,7 @@ class LocalNotificationOptionPageState
         ),
       ),
       listBottomNavigateBar: ListBottomNavigateItem.list,
-      bottomNavigateBarIndex: 3,
+      bottomNavigateBarIndex: ListBottomNavigateItem.notificationIndex,
     );
   }
 }

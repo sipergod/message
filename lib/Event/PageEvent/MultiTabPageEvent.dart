@@ -4,7 +4,6 @@ class MultiTabPageEvent {
   State state;
   MultiTabPageEvent(this.state);
 
-  GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
   late TabController tabController;
   int currentTabIndex = 0;
 

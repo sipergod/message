@@ -5,6 +5,7 @@ import 'package:message/Page/HomePage.dart';
 import 'package:message/Static/RouteGenerator.dart';
 import 'Component/AnalyticsRouteObserver.dart';
 import 'Event/InitEvent.dart';
+import 'Page/Public/IntroductionPage.dart';
 import 'Static/AppThemes.dart';
 import 'Static/ApplicationInitSettings.dart';
 
@@ -52,14 +53,17 @@ class MyAppState extends State<MyApp> {
           debugShowCheckedModeBanner: false,
           title: '',
           theme: theme,
-          home: HomePage(),
+          home: ApplicationInitSettings.instance.sharedPreferences
+                      .getBool('Welcome') ==
+                  null
+              ? IntroductionPage()
+              : HomePage(),
           navigatorObservers: [
             ApplicationInitSettings.firebaseObserver,
             AnalyticsRouteObserver(
               analytics: ApplicationInitSettings.firebaseAnalytics,
             ),
           ],
-          initialRoute: '/',
           onGenerateRoute: RouteGenerator.generateRoute,
         );
       },

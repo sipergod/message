@@ -31,7 +31,7 @@ class SettingPageState extends State<SettingPage> {
     return BottomNavBarTemplate(
       bodyWidget: buildBody(),
       listBottomNavigateBar: ListBottomNavigateItem.list,
-      bottomNavigateBarIndex: 5,
+      bottomNavigateBarIndex: ListBottomNavigateItem.settingIndex,
     );
   }
 

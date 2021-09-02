@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:message/Static/Enum/AuthenticationSupportState.dart';
+import 'package:message/UI/ElemBuilder.dart';
 
 class LocalAuthenticationConfig {
   LocalAuthenticationConfig({required this.localAuthentication, this.state})
@@ -79,6 +80,12 @@ class LocalAuthenticationConfig {
         authorized = "Error - ${e.message}";
         isAuthorized = false;
       });
+
+      ElemBuilder(state!).buildAndShowSnackBar(
+        'Error - ${e.message}',
+        '',
+        () {},
+      );
       return;
     }
     state!.setState(() {

@@ -54,7 +54,7 @@ class _ListViewBuilderState extends State<ListViewBuilder> {
             onRefresh: () => listViewBuilderEvent.loadList(1),
           ),
         ),
-        Visibility(
+        /*Visibility(
           visible: listViewBuilderEvent.isLoading,
           child: new Center(
             child: new CircularProgressIndicator(
@@ -63,7 +63,7 @@ class _ListViewBuilderState extends State<ListViewBuilder> {
               ),
             ),
           ),
-        ),
+        ),*/
       ],
     );
   }
@@ -88,9 +88,24 @@ class _ListViewBuilderState extends State<ListViewBuilder> {
           )
         : ListView.builder(
             physics: AlwaysScrollableScrollPhysics(),
-            itemCount: listViewBuilderEvent.listData.length,
             controller: listViewBuilderEvent.scrollController,
+            itemCount: listViewBuilderEvent.listData.length + 1,
             itemBuilder: (context, i) {
+              if (i == listViewBuilderEvent.listData.length) {
+                return Center(
+                  child: Container(
+                    padding: EdgeInsets.only(
+                      top: Constants.padding,
+                      bottom: Constants.paddingSmall,
+                    ),
+                    child: CircularProgressIndicator(
+                      valueColor: new AlwaysStoppedAnimation<Color>(
+                        Theme.of(context).accentColor,
+                      ),
+                    ),
+                  ),
+                );
+              }
               Widget _buildItem = Container();
               if (i < listViewBuilderEvent.listData.length) {
                 _buildItem = _buildRow(listViewBuilderEvent.listData[i]);

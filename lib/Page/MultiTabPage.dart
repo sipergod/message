@@ -59,7 +59,7 @@ class MultiTabPageState extends State<MultiTabPage>
         }).toList(),
       ),
       listBottomNavigateBar: ListBottomNavigateItem.list,
-      bottomNavigateBarIndex: 1,
+      bottomNavigateBarIndex: ListBottomNavigateItem.multiTabIndex,
     );
   }
 

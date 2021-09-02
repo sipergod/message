@@ -6,6 +6,7 @@ import 'package:message/Static/ApplicationInitSettings.dart';
 import 'package:message/Static/Constants.dart';
 import 'package:message/Static/ListBuildItem/ListBottomNavigateItem.dart';
 import 'package:message/Template/BottomNavBarTemplate.dart';
+import 'package:message/UI/ElemBuilder.dart';
 import 'package:message/UI/ListViewBuilder.dart';
 
 class HomePage extends StatefulWidget {
@@ -24,6 +25,12 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _counter++;
     });
+
+    ElemBuilder(this).buildAndShowSnackBar(
+      'Do push notification',
+      'Undo',
+      () {},
+    );
 
     FirebaseMessageConfig.sendPushMessage([
       ApplicationInitSettings.instance.sharedPreferences.getString('token')!
@@ -90,7 +97,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       listBottomNavigateBar: ListBottomNavigateItem.list,
-      bottomNavigateBarIndex: 0,
+      bottomNavigateBarIndex: ListBottomNavigateItem.homeIndex,
       floatingActionButton: Visibility(
         visible: fBtnVisible,
         child: FloatingActionButton(
@@ -104,6 +111,8 @@ class _HomePageState extends State<HomePage> {
 
   Widget buildListData() {
     return ListViewBuilder(
-        initListData: [], scrollController: scrollController);
+      initListData: [],
+      scrollController: scrollController,
+    );
   }
 }

@@ -6,7 +6,6 @@ class ListViewBuilderEvent {
   State state;
   ListViewBuilderEvent(this.state);
 
-  GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
   GlobalKey<RefreshIndicatorState> refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
 
@@ -19,7 +18,7 @@ class ListViewBuilderEvent {
   List<Map<String, dynamic>> listData = [];
 
   void setScaffoldKey(GlobalKey<ScaffoldState> key) {
-    scaffoldKey = key;
+
   }
 
   void preLoad() {

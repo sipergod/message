@@ -25,7 +25,7 @@ class LocalAuthenticationPageState extends State<LocalAuthenticationPage> {
     return BottomNavBarTemplate(
       bodyWidget: buildBody(),
       listBottomNavigateBar: ListBottomNavigateItem.list,
-      bottomNavigateBarIndex: 4,
+      bottomNavigateBarIndex: ListBottomNavigateItem.authenticationIndex,
     );
   }
 
@@ -48,7 +48,9 @@ class LocalAuthenticationPageState extends State<LocalAuthenticationPage> {
               Text("This device is not supported"),
             Divider(height: 20),
             Text(
-                'Can check biometrics: ${LocalAuthenticationService.localAuthenticationConfig.canCheckBiometrics}\n'),
+              'Can check biometrics: '
+              '${LocalAuthenticationService.localAuthenticationConfig.canCheckBiometrics}\n',
+            ),
             ElevatedButton(
               child: const Text('Check biometrics'),
               onPressed: LocalAuthenticationService
@@ -56,7 +58,9 @@ class LocalAuthenticationPageState extends State<LocalAuthenticationPage> {
             ),
             Divider(height: 20),
             Text(
-                'Available biometrics: ${LocalAuthenticationService.localAuthenticationConfig.availableBiometrics}\n'),
+              'Available biometrics: '
+              '${LocalAuthenticationService.localAuthenticationConfig.availableBiometrics}\n',
+            ),
             ElevatedButton(
               child: const Text('Get available biometrics'),
               onPressed: LocalAuthenticationService
@@ -64,7 +68,9 @@ class LocalAuthenticationPageState extends State<LocalAuthenticationPage> {
             ),
             Divider(height: 20),
             Text(
-                'Current State: ${LocalAuthenticationService.localAuthenticationConfig.authorized}\n'),
+              'Current State: '
+              '${LocalAuthenticationService.localAuthenticationConfig.authorized}\n',
+            ),
             (LocalAuthenticationService
                     .localAuthenticationConfig.isAuthenticating)
                 ? ElevatedButton(
