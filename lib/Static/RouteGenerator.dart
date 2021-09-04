@@ -4,48 +4,62 @@ import 'package:message/Page/HomePage.dart';
 import 'package:message/Page/LocalAuthenticationPage.dart';
 import 'package:message/Page/LocalNotificationOptionPage.dart';
 import 'package:message/Page/MultiTabPage.dart';
+import 'package:message/Page/Public/AppLockPage.dart';
 import 'package:message/Page/Public/IntroductionPage.dart';
 import 'package:message/Page/Static/SettingPage.dart';
 import 'package:message/Static/ListBuildItem/ListBottomNavigateItem.dart';
+import 'package:message/Static/PageRouteName.dart';
 import 'package:message/Template/BottomNavBarTemplate.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case '/home':
+      case PageRouteName.homeRoute:
         return MaterialPageRoute(
           settings: settings,
           builder: (BuildContext context) => HomePage(),
         );
-      case '/multiTab':
+      case PageRouteName.multiTabRoute:
         return MaterialPageRoute(
           settings: settings,
           builder: (BuildContext context) => MultiTabPage(),
         );
-      case '/animation':
+      case PageRouteName.animationRoute:
         return MaterialPageRoute(
           settings: settings,
           builder: (BuildContext context) => AnimationPage(),
         );
-      case '/notification':
+      case PageRouteName.notificationRoute:
         return MaterialPageRoute(
           settings: settings,
           builder: (BuildContext context) => LocalNotificationOptionPage(),
         );
-      case '/authentication':
+      case PageRouteName.authenticationRoute:
         return MaterialPageRoute(
           settings: settings,
           builder: (BuildContext context) => LocalAuthenticationPage(),
         );
-      case '/setting':
+      case PageRouteName.settingRoute:
         return MaterialPageRoute(
           settings: settings,
           builder: (BuildContext context) => SettingPage(),
         );
-      case '/introduction':
+      case PageRouteName.introductionRoute:
         return MaterialPageRoute(
           settings: settings,
           builder: (BuildContext context) => IntroductionPage(),
+        );
+      case PageRouteName.lockScreenRoute:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (BuildContext context) => AppLockPage(),
+        );
+      case PageRouteName.createLockRoute:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (BuildContext context) => AppLockPage(
+            isSetupPasscode: true,
+          ),
         );
       default:
         return _errorRoute(settings);

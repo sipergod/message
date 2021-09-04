@@ -26,7 +26,7 @@ class ListViewBuilderEvent {
   }
 
   void addScrollListener() {
-    PublicFunctionEvent().addScrollListener(
+    PublicFunctionEvent.instance.addScrollListener(
       scrollController,
       () {
         loadList(currentPageNum + 1);

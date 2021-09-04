@@ -2,12 +2,14 @@ import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:message/Page/HomePage.dart';
+import 'package:message/Page/Public/AppLockPage.dart';
 import 'package:message/Static/RouteGenerator.dart';
 import 'Component/AnalyticsRouteObserver.dart';
 import 'Event/InitEvent.dart';
 import 'Page/Public/IntroductionPage.dart';
 import 'Static/AppThemes.dart';
 import 'Static/ApplicationInitSettings.dart';
+import 'Static/PageRouteName.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,11 +55,7 @@ class MyAppState extends State<MyApp> {
           debugShowCheckedModeBanner: false,
           title: '',
           theme: theme,
-          home: ApplicationInitSettings.instance.sharedPreferences
-                      .getBool('Welcome') ==
-                  null
-              ? IntroductionPage()
-              : HomePage(),
+          home: buildHome(),
           navigatorObservers: [
             ApplicationInitSettings.firebaseObserver,
             AnalyticsRouteObserver(
@@ -68,5 +66,19 @@ class MyAppState extends State<MyApp> {
         );
       },
     );
+  }
+
+  Widget buildHome() {
+    if (ApplicationInitSettings.instance.sharedPreferences.getBool('Welcome') ==
+        null) {
+      ApplicationInitSettings.instance.currentPageName = PageRouteName.introductionRoute;
+      return IntroductionPage();
+    }
+    if (Init.instance.checkForLockingApp()) {
+      ApplicationInitSettings.instance.currentPageName = PageRouteName.lockScreenRoute;
+      return AppLockPage();
+    }
+    ApplicationInitSettings.instance.currentPageName = PageRouteName.homeRoute;
+    return HomePage();
   }
 }

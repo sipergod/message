@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    PublicFunctionEvent().addScrollListener(
+    PublicFunctionEvent.instance.addScrollListener(
       scrollController,
       () {},
       () {

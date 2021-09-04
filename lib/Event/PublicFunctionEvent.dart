@@ -1,8 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:message/Static/ApplicationInitSettings.dart';
 
 class PublicFunctionEvent {
+  PublicFunctionEvent._();
+  static final instance = PublicFunctionEvent._();
+
   void addScrollListener(
     ScrollController controller,
     Function loadMoreFunc,
@@ -24,13 +31,26 @@ class PublicFunctionEvent {
     });
   }
 
-  static Future<bool> onWillPop(DateTime? currentBackPressTime) {
+  Future<bool> onWillPop() {
+    DateTime? currentClickTime =
+        ApplicationInitSettings.instance.currentBackPressTime;
     DateTime now = DateTime.now();
-    if (currentBackPressTime == null ||
-        now.difference(currentBackPressTime) > Duration(seconds: 2)) {
-      currentBackPressTime = now;
+
+    if (currentClickTime == null ||
+        now.difference(currentClickTime) > Duration(seconds: 2)) {
+      ApplicationInitSettings.instance.currentBackPressTime = now;
+
       Fluttertoast.showToast(msg: 'Click twice to exit app');
       return Future.value(false);
+    }
+    return Future.value(true);
+  }
+
+  Future<bool> exitApp() {
+    if (Platform.isAndroid) {
+      SystemNavigator.pop();
+    } else if (Platform.isIOS) {
+      exit(0);
     }
     return Future.value(true);
   }

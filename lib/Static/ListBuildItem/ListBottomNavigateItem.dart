@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 
+import '../PageRouteName.dart';
+
 class ListBottomNavigateItem {
   static List<Map<String, dynamic>> list = [
     {
       'icon': Icon(Icons.home),
       'tooltip': 'Home',
-      'pageName': '/home',
+      'pageName': PageRouteName.homeRoute,
     },
     {
       'icon': Icon(Icons.table_view),
       'tooltip': 'Multiple Tab Page',
-      'pageName': '/multiTab',
+      'pageName': PageRouteName.multiTabRoute,
     },
     {
       'icon': Icon(Icons.animation),
       'tooltip': 'Animation Page',
-      'pageName': '/animation',
+      'pageName': PageRouteName.animationRoute,
     },
     {},
     {
@@ -26,12 +28,12 @@ class ListBottomNavigateItem {
     {
       'icon': Icon(Icons.fingerprint),
       'tooltip': 'Authentication',
-      'pageName': '/authentication',
+      'pageName': PageRouteName.authenticationRoute,
     },
     {
       'icon': Icon(Icons.settings),
       'tooltip': 'Settings',
-      'pageName': '/setting',
+      'pageName': PageRouteName.settingRoute,
     },
   ];
 

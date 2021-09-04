@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:message/Event/InitEvent.dart';
 import 'package:message/Event/PublicFunctionEvent.dart';
-import 'package:message/Static/LocalAuthenticationService.dart';
-import 'package:message/Static/LocalNotificationService.dart';
 
 class RootTemplate extends StatefulWidget {
   final GlobalKey<ScaffoldState>? scaffoldKey;
+  final bool? automaticallyImplyLeading;
   final String? title;
   final Widget? appBarAction;
   final Widget? drawerMenu;
   final Widget? bottomTabBar;
+  final bool? checkExit;
   final Widget? bodyWidget;
   final int? bottomNavigateBarIndex;
   final Widget? bottomNavigateBar;
@@ -18,10 +19,12 @@ class RootTemplate extends StatefulWidget {
   RootTemplate({
     Key? key,
     this.scaffoldKey,
+    this.automaticallyImplyLeading,
     this.title,
     this.appBarAction,
     this.drawerMenu,
     this.bottomTabBar,
+    this.checkExit,
     this.bodyWidget,
     this.bottomNavigateBarIndex,
     this.bottomNavigateBar,
@@ -35,13 +38,9 @@ class RootTemplate extends StatefulWidget {
 
 class _RootTemplateState extends State<RootTemplate>
     with WidgetsBindingObserver {
-  DateTime? currentBackPressTime;
-
   @override
   void initState() {
-    LocalNotificationService.notificationService.initialize();
-    LocalAuthenticationService.localAuthenticationConfig.initialize();
-
+    WidgetsBinding.instance!.addObserver(this);
     super.initState();
   }
 
@@ -53,6 +52,7 @@ class _RootTemplateState extends State<RootTemplate>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    Init.instance.addEventAppLifecycleState(state, this);
     super.didChangeAppLifecycleState(state);
   }
 
@@ -63,7 +63,11 @@ class _RootTemplateState extends State<RootTemplate>
       appBar: buildAppBar() as AppBar,
       drawer: widget.drawerMenu,
       body: WillPopScope(
-        onWillPop: () => PublicFunctionEvent.onWillPop(currentBackPressTime),
+        onWillPop: widget.checkExit == null || (widget.checkExit!) == true
+            ? () async {
+                return await PublicFunctionEvent.instance.onWillPop();
+              }
+            : null,
         child: SafeArea(
           child: widget.bodyWidget as Widget,
         ),
@@ -76,7 +80,9 @@ class _RootTemplateState extends State<RootTemplate>
 
   Widget buildAppBar() {
     return AppBar(
-      automaticallyImplyLeading: true,
+      automaticallyImplyLeading: widget.automaticallyImplyLeading == null
+          ? true
+          : widget.automaticallyImplyLeading as bool,
       centerTitle: true,
       title: buildTitle(),
       actions: widget.appBarAction != null ? buildAppbarAction() : null,

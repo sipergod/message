@@ -85,24 +85,9 @@ class MultiTabPageState extends State<MultiTabPage>
     );
   }
 
-  Widget _createPhotoTitle() {
-    return Container(
-        width: double.infinity,
-        color: Colors.white,
-        child: ListTile(
-          leading: CircleAvatar(
-            backgroundImage: AssetImage('assets/ic_launcher.png'),
-          ),
-          title: Text(
-            'flutter',
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
-          ),
-        ));
-  }
-
   Widget _createPopupContent(String image) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.0),
+      padding: EdgeInsets.symmetric(horizontal: Constants.padding),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16.0),
         child: Column(
@@ -120,6 +105,21 @@ class MultiTabPageState extends State<MultiTabPage>
         ),
       ),
     );
+  }
+
+  Widget _createPhotoTitle() {
+    return Container(
+        width: double.infinity,
+        color: Colors.white,
+        child: ListTile(
+          leading: CircleAvatar(
+            backgroundImage: AssetImage('assets/ic_launcher.png'),
+          ),
+          title: Text(
+            'flutter',
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
+          ),
+        ));
   }
 
   Widget _createActionBar() {

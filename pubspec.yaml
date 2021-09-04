@@ -25,6 +25,7 @@ dependencies:
   google_maps_flutter: ^2.0.6
   location: ^4.3.0
 
+  crypto: ^3.0.1
   local_auth: ^1.1.6
   shared_preferences: ^2.0.6
   flutter_local_notifications: ^8.1.1+1

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:message/Static/ApplicationInitSettings.dart';
 import 'package:message/Static/ListBuildItem/ListIntroductionScreenItem.dart';
+import 'package:message/Static/PageRouteName.dart';
 
 class IntroductionPage extends StatefulWidget {
   IntroductionPage({Key? key}) : super(key: key);
@@ -78,6 +79,6 @@ class IntroductionPageState extends State<IntroductionPage> {
 
   void onDoneIntroduction() {
     ApplicationInitSettings.instance.sharedPreferences.setBool('Welcome', false);
-    Navigator.of(context).pushReplacementNamed('/home');
+    Navigator.of(context).pushReplacementNamed(PageRouteName.homeRoute);
   }
 }

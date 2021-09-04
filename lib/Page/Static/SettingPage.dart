@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:message/Component/Fragment/AnimatedDialog.dart';
 import 'package:message/Event/PageEvent/SettingPageEvent.dart';
+import 'package:message/Page/Public/AppLockPage.dart';
 import 'package:message/Static/Constants.dart';
 import 'package:message/Static/ListBuildItem/ListBottomNavigateItem.dart';
 import 'package:message/Template/BottomNavBarTemplate.dart';
@@ -13,6 +15,7 @@ class SettingPage extends StatefulWidget {
 
 class SettingPageState extends State<SettingPage> {
   late SettingPageEvent settingPageEvent;
+  late OverlayEntry _popupDialog;
 
   @override
   void initState() {
@@ -46,6 +49,7 @@ class SettingPageState extends State<SettingPage> {
       child: ListView(
         children: [
           buildInterfaceSetting(),
+          buildSecuritySetting(),
           //createActionBar(),
         ],
       ),
@@ -67,6 +71,26 @@ class SettingPageState extends State<SettingPage> {
           buildSettingOption('themeIsSystem', 'Use system theme', true),
           buildSettingOption('themeIsDark', 'Dark theme',
               !settingPageEvent.themeStyleIsSystem),
+        ],
+      ),
+    );
+  }
+
+  Widget buildSecuritySetting() {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+        color: Theme.of(context).backgroundColor.withAlpha(88),
+      ),
+      margin: EdgeInsets.all(Constants.paddingSmall),
+      padding: EdgeInsets.all(Constants.padding),
+      child: Column(
+        children: [
+          buildGroupTitle('Security'),
+          Divider(),
+          buildSettingOption('activateAppPasscode', 'Enable app lock', true),
+          buildSettingButton('changeAppPasscode', 'Change Passcode',
+              settingPageEvent.appPasscodeEnable),
         ],
       ),
     );
@@ -105,6 +129,17 @@ class SettingPageState extends State<SettingPage> {
     );
   }
 
+  Widget buildSettingButton(String settingName, String title, bool isActive) {
+    return IgnorePointer(
+      ignoring: !isActive,
+      child: Container(
+        alignment: Alignment.centerLeft,
+        width: MediaQuery.of(context).size.width,
+        child: buildOption(settingName),
+      ),
+    );
+  }
+
   Widget buildOption(String settingName) {
     switch (settingName) {
       case 'themeIsSystem':
@@ -117,8 +152,46 @@ class SettingPageState extends State<SettingPage> {
           value: settingPageEvent.themeStyleIsDark,
           onChanged: settingPageEvent.changeThemeStyle,
         );
+      case 'activateAppPasscode':
+        return Switch(
+          value: settingPageEvent.appPasscodeEnable,
+          onChanged: (checked) {
+            settingPageEvent.activateAppPasscode(checked);
+          },
+        );
+      case 'changeAppPasscode':
+        return MaterialButton(
+          child: Text('Change Passcode'),
+          onPressed: settingPageEvent.appPasscodeEnable
+              ? settingPageEvent.changeAppPasscode
+              : null,
+          padding: EdgeInsets.only(left: 0),
+        );
       default:
         return Container();
     }
+  }
+
+  OverlayEntry createPopupDialog() {
+    return OverlayEntry(
+      builder: (context) => AnimatedDialog(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            AppLockPage(
+              context: context,
+              isSetupPasscode: true,
+            ),
+            Center(
+              child: IconButton(
+                  onPressed: () {
+                    _popupDialog.remove();
+                  },
+                  icon: Icon(Icons.cancel)),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

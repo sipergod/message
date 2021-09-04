@@ -8,8 +8,13 @@ class ApplicationInitSettings {
   static final instance = ApplicationInitSettings._();
 
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
+  late State state;
+  DateTime? currentBackPressTime;
+  String currentPageName = '';
 
   late SharedPreferences sharedPreferences;
+  String appPasscode = '';
+  int appPasscodeLength = 0;
   bool themeIsSystem = false;
   bool themeIsDark = false;
 
