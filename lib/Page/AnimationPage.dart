@@ -17,7 +17,7 @@ class AnimationPageState extends State<AnimationPage>
 
   @override
   void initState() {
-    animationPageEvent = new AnimationPageEvent(this);
+    animationPageEvent = new AnimationPageEvent(this, this.setState);
 
     animationPageEvent.controller = AnimationController(
       duration: animationPageEvent.duration,

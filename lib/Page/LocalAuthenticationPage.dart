@@ -18,6 +18,7 @@ class LocalAuthenticationPageState extends State<LocalAuthenticationPage> {
     super.initState();
 
     LocalAuthenticationService.localAuthenticationConfig.state = this;
+    LocalAuthenticationService.localAuthenticationConfig.setStateFunc = this.setState;
   }
 
   @override

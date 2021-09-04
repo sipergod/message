@@ -19,7 +19,7 @@ class SettingPageState extends State<SettingPage> {
 
   @override
   void initState() {
-    settingPageEvent = new SettingPageEvent(this);
+    settingPageEvent = new SettingPageEvent(this, this.setState);
 
     Future.delayed(Duration(seconds: 1)).then((value) {
       settingPageEvent.preLoad();

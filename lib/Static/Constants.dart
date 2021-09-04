@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
 class Constants {
-  static double padding = 15.0;
-  static double paddingSmall = 5.0;
-  static double paddingMedium = 20.0;
-  static double paddingLarge = 25.0;
+  static const double padding = 15.0;
+  static const double paddingSmall = 5.0;
+  static const double paddingMedium = 20.0;
+  static const double paddingLarge = 25.0;
+
+  static const double buttonHeight = 50.0;
+  static const double buttonSplashRadius = 25.0;
 
   static Color primaryColor = Colors.deepOrangeAccent;
   static Color secondaryColor = Colors.redAccent;

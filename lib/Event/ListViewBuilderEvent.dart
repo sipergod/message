@@ -4,7 +4,8 @@ import 'PublicFunctionEvent.dart';
 
 class ListViewBuilderEvent {
   State state;
-  ListViewBuilderEvent(this.state);
+  Function setStateFunc;
+  ListViewBuilderEvent(this.state, this.setStateFunc);
 
   GlobalKey<RefreshIndicatorState> refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
@@ -38,12 +39,12 @@ class ListViewBuilderEvent {
 
   Future<void> loadList(int pageNum) async {
     if(pageNum != 1) {
-      state.setState(() {
+      setStateFunc(() {
         isLoading = true;
       });
     }
     await testLoadList(pageNum).then((value) {
-      state.setState(() {
+      setStateFunc(() {
         isLoading = false;
       });
     });
@@ -52,7 +53,7 @@ class ListViewBuilderEvent {
   Future<void> testLoadList(int pageNum) async {
     await Future.delayed(Duration(seconds: 1));
     if (pageNum == 1) {
-      state.setState(() {
+      setStateFunc(() {
         listData = List<Map<String, dynamic>>.generate(
           50,
           (i) => i % 6 == 0
@@ -75,7 +76,7 @@ class ListViewBuilderEvent {
                         'Message body ${listData.length + i}')
               },
       ).forEach((element) {
-        state.setState(() {
+        setStateFunc(() {
           listData.add(element);
         });
       });

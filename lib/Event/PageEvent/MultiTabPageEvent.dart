@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class MultiTabPageEvent {
   State state;
-  MultiTabPageEvent(this.state);
+  Function setStateFunc;
+  MultiTabPageEvent(this.state, this.setStateFunc);
 
   late TabController tabController;
   int currentTabIndex = 0;
@@ -10,7 +11,7 @@ class MultiTabPageEvent {
   void preLoad() {
     tabController.addListener(() {
       if (tabController.index != tabController.previousIndex) {
-        state.setState(() {
+        setStateFunc(() {
           currentTabIndex = tabController.index;
         });
       }

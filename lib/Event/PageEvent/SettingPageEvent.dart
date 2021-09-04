@@ -11,7 +11,8 @@ import 'package:message/UI/ElemBuilder.dart';
 
 class SettingPageEvent {
   State state;
-  SettingPageEvent(this.state);
+  Function setStateFunc;
+  SettingPageEvent(this.state, this.setStateFunc);
 
   bool themeStyleIsSystem = ApplicationInitSettings.instance.themeIsSystem;
   bool themeStyleIsDark = ApplicationInitSettings.instance.themeIsDark;
@@ -24,7 +25,7 @@ class SettingPageEvent {
   Future<void> preLoad() async {}
 
   void changeThemeMode(bool checked) async {
-    state.setState(() {
+    setStateFunc(() {
       themeStyleIsSystem = checked;
       ApplicationInitSettings.instance.themeIsSystem = checked;
       initSettings.sharedPreferences.setBool('themeIsSystem', checked);
@@ -34,7 +35,7 @@ class SettingPageEvent {
   }
 
   void changeThemeStyle(bool checked) async {
-    state.setState(() {
+    setStateFunc(() {
       themeStyleIsDark = checked;
       ApplicationInitSettings.instance.themeIsDark = checked;
       initSettings.sharedPreferences.setBool('themeIsDark', checked);
@@ -59,7 +60,7 @@ class SettingPageEvent {
     if (checked) {
       changeAppPasscode();
     } else {
-      state.setState(() {
+      setStateFunc(() {
         appPasscodeEnable = checked;
       });
       savePasscode('', 0);
@@ -68,7 +69,7 @@ class SettingPageEvent {
 
   void changeAppPasscode() async {
     bool result = await doSetPasscode();
-    state.setState(() {
+    setStateFunc(() {
       if(ApplicationInitSettings.instance.appPasscode.isNotEmpty &&  ApplicationInitSettings.instance.appPasscodeLength != 0) {
         appPasscodeEnable = true;
       } else {

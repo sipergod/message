@@ -21,7 +21,10 @@ class _ListViewBuilderState extends State<ListViewBuilder> {
 
   @override
   void initState() {
-    listViewBuilderEvent = new ListViewBuilderEvent(this);
+    listViewBuilderEvent = new ListViewBuilderEvent(
+      this,
+      this.setState,
+    );
     if (widget.initListData == null) {
     } else {
       listViewBuilderEvent.listData = widget.initListData!;

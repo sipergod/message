@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 
 class AnimationPageEvent {
   State state;
-  AnimationPageEvent(this.state);
+  Function setStateFunc;
+  AnimationPageEvent(this.state, this.setStateFunc);
 
   Duration duration = new Duration(seconds: 2);
   Curve curve = Curves.easeOut;
@@ -48,7 +49,7 @@ class AnimationPageEvent {
   }
 
   void doContainerAnimation() {
-    state.setState(() {
+    setStateFunc(() {
       final random = Random();
 
       // Generate a random width and height from 50 to 250.

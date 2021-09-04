@@ -34,6 +34,7 @@ class Init {
     if (initSetting.appPasscode.isNotEmpty &&
         initSetting.appPasscodeLength != 0 &&
         initSetting.currentPageName != PageRouteName.lockScreenRoute) {
+      print('check locking app: true');
       return true;
     }
     return false;

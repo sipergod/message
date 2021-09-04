@@ -28,7 +28,7 @@ class MultiTabPageState extends State<MultiTabPage>
 
   @override
   void initState() {
-    multiTabEvent = new MultiTabPageEvent(this);
+    multiTabEvent = new MultiTabPageEvent(this, this.setState);
     multiTabEvent.tabController = new TabController(
       length: ListTabItem.list.length,
       vsync: this,
