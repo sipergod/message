@@ -12,6 +12,7 @@ class ListViewBuilderEvent {
 
   ScrollController scrollController = new ScrollController();
 
+  int defaultLoadingNumber = 15;
   bool isLoading = false;
   bool floatingButtonVisibility = false;
   int currentPageNum = 1;
@@ -55,7 +56,7 @@ class ListViewBuilderEvent {
     if (pageNum == 1) {
       setStateFunc(() {
         listData = List<Map<String, dynamic>>.generate(
-          50,
+          defaultLoadingNumber,
           (i) => i % 6 == 0
               ? {i.toString(): Text('Heading $i')}
               : {i.toString(): Text('Sender $i ' 'Message body $i')},
@@ -64,7 +65,7 @@ class ListViewBuilderEvent {
       print('Do refresh list\n');
     } else {
       List<Map<String, dynamic>>.generate(
-        50,
+        defaultLoadingNumber,
         (i) => (listData.length + i) % 6 == 0
             ? {
                 (listData.length + i).toString():

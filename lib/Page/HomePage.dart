@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:message/Component/FirebaseMessageConfig.dart';
+import 'package:message/Component/Fragment/SkeletonLoadWidget.dart';
 import 'package:message/Event/PublicFunctionEvent.dart';
 import 'package:message/Static/ApplicationInitSettings.dart';
 import 'package:message/Static/Constants.dart';
@@ -70,6 +71,7 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             children: [
               SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
                 child: Container(
                   padding: EdgeInsets.all(Constants.padding),
                   width: MediaQuery.of(context).size.width,
@@ -83,6 +85,7 @@ class _HomePageState extends State<HomePage> {
                         '$_counter',
                         style: Theme.of(context).textTheme.headline4,
                       ),
+                      buildTestItem(),
                     ],
                   ),
                 ),
@@ -107,6 +110,24 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  Widget buildTestItem() {
+    /*return Center(
+      child: Container(
+        padding: EdgeInsets.only(
+          top: Constants.padding,
+          bottom: Constants.paddingSmall,
+        ),
+        child: CircularProgressIndicator(
+          valueColor: new AlwaysStoppedAnimation<Color>(
+            Theme.of(context).accentColor,
+          ),
+        ),
+      ),
+    );*/
+    /*return SkeletonLoadWidget();*/
+    return Container();
   }
 
   Widget buildListData() {

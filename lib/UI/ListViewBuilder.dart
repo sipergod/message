@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:message/Component/Fragment/SkeletonLoadWidget.dart';
 import 'package:message/Event/ListViewBuilderEvent.dart';
 import 'package:message/Static/Constants.dart';
 
 class ListViewBuilder extends StatefulWidget {
+  final ScrollController? scrollController;
+  final List<Map<String, dynamic>>? initListData;
+  final Widget? itemBuilder;
+  final Widget? itemLoadingBuilder;
+
   ListViewBuilder({
     Key? key,
-    this.initListData,
     this.scrollController,
+    this.initListData,
+    this.itemBuilder,
+    this.itemLoadingBuilder,
   });
-
-  late final List<Map<String, dynamic>>? initListData;
-  final ScrollController? scrollController;
 
   @override
   _ListViewBuilderState createState() => new _ListViewBuilderState();
@@ -94,23 +99,10 @@ class _ListViewBuilderState extends State<ListViewBuilder> {
             controller: listViewBuilderEvent.scrollController,
             itemCount: listViewBuilderEvent.listData.length + 1,
             itemBuilder: (context, i) {
-              if (i == listViewBuilderEvent.listData.length) {
-                return Center(
-                  child: Container(
-                    padding: EdgeInsets.only(
-                      top: Constants.padding,
-                      bottom: Constants.paddingSmall,
-                    ),
-                    child: CircularProgressIndicator(
-                      valueColor: new AlwaysStoppedAnimation<Color>(
-                        Theme.of(context).accentColor,
-                      ),
-                    ),
-                  ),
-                );
-              }
               Widget _buildItem = Container();
-              if (i < listViewBuilderEvent.listData.length) {
+              if (i >= listViewBuilderEvent.listData.length) {
+                _buildItem = _buildLoadingRow();
+              } else {
                 _buildItem = _buildRow(listViewBuilderEvent.listData[i]);
               }
               return _buildItem;
@@ -119,20 +111,60 @@ class _ListViewBuilderState extends State<ListViewBuilder> {
   }
 
   Widget _buildRow(Map<String, dynamic> listData) {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Container(
-            padding: EdgeInsets.all(Constants.paddingSmall),
-            child: Text(listData.keys.first.toString()),
+    if (widget.itemBuilder == null) {
+      return Container(
+        margin: EdgeInsets.only(bottom: Constants.paddingSmall),
+        decoration: BoxDecoration(
+          color: Theme.of(context).primaryColor,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              padding: EdgeInsets.all(Constants.paddingSmall),
+              child: CircleAvatar(
+                child: Text(listData.keys.first.toString()),
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: EdgeInsets.all(Constants.paddingSmall),
+                  child: Text(listData.keys.first.toString()),
+                ),
+                Container(
+                  padding: EdgeInsets.all(Constants.paddingSmall),
+                  child: listData.values.first,
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    } else {
+      return widget.itemBuilder!;
+    }
+  }
+
+  Widget _buildLoadingRow() {
+    if (widget.itemLoadingBuilder == null) {
+      return SkeletonLoadWidget();
+      /*return Center(
+        child: Container(
+          padding: EdgeInsets.only(
+            top: Constants.padding,
+            bottom: Constants.paddingSmall,
           ),
-          Container(
-            padding: EdgeInsets.all(Constants.paddingSmall),
-            child: listData.values.first,
+          child: CircularProgressIndicator(
+            valueColor: new AlwaysStoppedAnimation<Color>(
+              Theme.of(context).accentColor,
+            ),
           ),
-        ],
-      ),
-    );
+        ),
+      );*/
+    } else {
+      return widget.itemLoadingBuilder!;
+    }
   }
 }
