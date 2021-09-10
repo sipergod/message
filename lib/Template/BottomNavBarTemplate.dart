@@ -93,7 +93,7 @@ class BottomNavBarTemplateState extends State<BottomNavBarTemplate> {
 
   Color setActive(int i) {
     if (checkIndex(i))
-      return Theme.of(context).accentColor;
+      return Theme.of(context).colorScheme.secondary;
     else
       return Theme.of(context).disabledColor;
   }

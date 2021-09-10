@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:message/Component/FirebaseMessageConfig.dart';
 import 'package:message/Static/ApplicationInitSettings.dart';
@@ -19,10 +20,13 @@ class Init {
 
     initSetting.sharedPreferences = await SharedPreferences.getInstance();
 
-    FirebaseMessageConfig.initialize();
+    if (kIsWeb) {
+    } else {
+      FirebaseMessageConfig.initialize();
 
-    LocalNotificationService.notificationService.initialize();
-    LocalAuthenticationService.localAuthenticationConfig.initialize();
+      LocalNotificationService.notificationService.initialize();
+      LocalAuthenticationService.localAuthenticationConfig.initialize();
+    }
 
     setThemeIsSystem(initSetting);
     setThemeIsDark(initSetting);
@@ -45,9 +49,10 @@ class Init {
     switch (appLifecycleState) {
       case AppLifecycleState.paused:
         print('app state paused');
-        if(checkForLockingApp()) {
+        if (checkForLockingApp()) {
           initSetting.state = state;
-          Navigator.of(initSetting.state.context).pushNamed(PageRouteName.lockScreenRoute);
+          Navigator.of(initSetting.state.context)
+              .pushNamed(PageRouteName.lockScreenRoute);
         }
 
         break;

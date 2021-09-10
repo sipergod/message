@@ -79,7 +79,7 @@ class _BottomTabBarWithFilterWidgetState
                   ),
                 );
               }).toList(),
-              indicatorColor: Theme.of(context).accentColor,
+              indicatorColor: Theme.of(context).colorScheme.secondary,
             ),
           )
         ],
@@ -97,7 +97,7 @@ class _BottomTabBarWithFilterWidgetState
               children: <Widget>[
                 new Container(
                   width: double.infinity,
-                  color: Theme.of(context).accentColor,
+                  color: Theme.of(context).colorScheme.secondary,
                   padding: EdgeInsets.all(Constants.paddingSmall),
                   child: Text('Filter by',
                       textAlign: TextAlign.center,

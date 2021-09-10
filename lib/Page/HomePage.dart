@@ -121,13 +121,13 @@ class _HomePageState extends State<HomePage> {
         ),
         child: CircularProgressIndicator(
           valueColor: new AlwaysStoppedAnimation<Color>(
-            Theme.of(context).accentColor,
+            Theme.of(context).colorScheme.secondary,
           ),
         ),
       ),
     );*/
-    /*return SkeletonLoadWidget();*/
-    return Container();
+    return SkeletonLoadWidget();
+    /*return Container();*/
   }
 
   Widget buildListData() {

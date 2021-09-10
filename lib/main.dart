@@ -57,9 +57,9 @@ class MyAppState extends State<MyApp> {
           theme: theme,
           home: buildHome(),
           navigatorObservers: [
-            ApplicationInitSettings.firebaseObserver,
+            ApplicationInitSettings.firebaseObserver!,
             AnalyticsRouteObserver(
-              analytics: ApplicationInitSettings.firebaseAnalytics,
+              analytics: ApplicationInitSettings.firebaseAnalytics!,
             ),
           ],
           onGenerateRoute: RouteGenerator.generateRoute,
@@ -71,11 +71,13 @@ class MyAppState extends State<MyApp> {
   Widget buildHome() {
     if (ApplicationInitSettings.instance.sharedPreferences.getBool('Welcome') ==
         null) {
-      ApplicationInitSettings.instance.currentPageName = PageRouteName.introductionRoute;
+      ApplicationInitSettings.instance.currentPageName =
+          PageRouteName.introductionRoute;
       return IntroductionPage();
     }
     if (Init.instance.checkForLockingApp()) {
-      ApplicationInitSettings.instance.currentPageName = PageRouteName.lockScreenRoute;
+      ApplicationInitSettings.instance.currentPageName =
+          PageRouteName.lockScreenRoute;
       return AppLockPage();
     }
     ApplicationInitSettings.instance.currentPageName = PageRouteName.homeRoute;

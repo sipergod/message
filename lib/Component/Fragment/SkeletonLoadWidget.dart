@@ -46,7 +46,7 @@ class SkeletonLoadWidgetState extends State<SkeletonLoadWidget>
     }
 
     animationController = new AnimationController(
-      duration: Duration(seconds: 1),
+      duration: Duration(milliseconds: 500),
       vsync: this,
     )..repeat(reverse: true);
 
@@ -78,10 +78,6 @@ class SkeletonLoadWidgetState extends State<SkeletonLoadWidget>
         },
         child: Container(
           width: double.infinity,
-          /*decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            color: Colors.white70,
-          ),*/
           child: widget.child == null
               ? Container(
                   child: Row(

@@ -106,7 +106,7 @@ class MultiTabTemplateState extends State<MultiTabTemplate> {
               ),
             );
           }).toList(),
-          indicatorColor: Theme.of(context).accentColor,
+          indicatorColor: Theme.of(context).colorScheme.secondary,
         );
       }
     } else {
@@ -169,7 +169,7 @@ class MultiTabTemplateState extends State<MultiTabTemplate> {
 
   Color setActive(int i) {
     if (checkIndex(i))
-      return Theme.of(context).accentColor;
+      return Theme.of(context).colorScheme.secondary;
     else
       return Theme.of(context).disabledColor;
   }

@@ -70,7 +70,7 @@ class AppLockPageState extends State<AppLockPage> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: Constants.padding),
               child: Divider(
-                color: Theme.of(context).accentColor,
+                color: Theme.of(context).colorScheme.secondary,
               ),
             ),
             buildKeyboard(),

@@ -57,7 +57,7 @@ class _ListViewBuilderState extends State<ListViewBuilder> {
         Container(
           child: RefreshIndicator(
             key: listViewBuilderEvent.refreshIndicatorKey,
-            color: Theme.of(context).accentColor,
+            color: Theme.of(context).colorScheme.secondary,
             child: _buildListDataItem(),
             onRefresh: () => listViewBuilderEvent.loadList(1),
           ),
@@ -67,7 +67,7 @@ class _ListViewBuilderState extends State<ListViewBuilder> {
           child: new Center(
             child: new CircularProgressIndicator(
               valueColor: new AlwaysStoppedAnimation<Color>(
-                Theme.of(context).accentColor,
+                Theme.of(context).colorScheme.secondary,
               ),
             ),
           ),
@@ -158,7 +158,7 @@ class _ListViewBuilderState extends State<ListViewBuilder> {
           ),
           child: CircularProgressIndicator(
             valueColor: new AlwaysStoppedAnimation<Color>(
-              Theme.of(context).accentColor,
+              Theme.of(context).colorScheme.secondary,
             ),
           ),
         ),

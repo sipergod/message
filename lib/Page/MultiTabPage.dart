@@ -19,9 +19,9 @@ class MultiTabPageState extends State<MultiTabPage>
   late OverlayEntry _popupDialog;
   List<String> imageUrls = [
     'assets/ic_launcher.png',
-    'assets/ic_launcher.png',
-    'assets/ic_launcher.png',
-    'assets/ic_launcher.png',
+    'assets/img1.jpg',
+    'assets/img2.jpg',
+    'assets/img3.jpg',
     'assets/ic_launcher.png',
     'assets/ic_launcher.png',
   ];
@@ -72,7 +72,7 @@ class MultiTabPageState extends State<MultiTabPage>
           Overlay.of(context)!.insert(_popupDialog);
         },
         onLongPressEnd: (details) => _popupDialog.remove(),
-        child: Image.asset(image, fit: BoxFit.cover),
+        child: Image.asset(image, fit: BoxFit.fill),
       ),
     );
   }
@@ -94,11 +94,21 @@ class MultiTabPageState extends State<MultiTabPage>
           mainAxisSize: MainAxisSize.min,
           children: [
             _createPhotoTitle(),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                  color: Theme.of(context).scaffoldBackgroundColor),
-              child: Image.asset(image, fit: BoxFit.none),
+            MouseRegion(
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                    color: Theme.of(context).scaffoldBackgroundColor),
+                child: Image.asset(image, fit: BoxFit.fill),
+              ),
+              onEnter: (event) {
+                print(event);
+                print('hihi');
+              },
+              onHover: (event) {
+                print(event);
+                print('haha');
+              },
             ),
             _createActionBar(),
           ],
@@ -124,7 +134,7 @@ class MultiTabPageState extends State<MultiTabPage>
 
   Widget _createActionBar() {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 10.0),
+      padding: EdgeInsets.symmetric(vertical: Constants.paddingSmall),
       color: Colors.white,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -137,9 +147,21 @@ class MultiTabPageState extends State<MultiTabPage>
             Icons.chat_bubble_outline_outlined,
             color: Colors.black,
           ),
-          Icon(
-            Icons.send,
-            color: Colors.black,
+          MouseRegion(
+            child: Container(
+              child: Icon(
+                Icons.send,
+                color: Colors.black,
+              ),
+            ),
+            onEnter: (event) {
+              print(event);
+              print('hihi');
+            },
+            onHover: (event) {
+              print(event);
+              print('haha');
+            },
           ),
         ],
       ),
